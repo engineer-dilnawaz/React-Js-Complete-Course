@@ -42,7 +42,7 @@ export default function Question({ index, onSelectAnswer, onSkipAnswer }) {
 
   if (answer.selectedAnswer && answer.isCorrect !== null) {
     answerState = answer.isCorrect ? "correct" : "wrong";
-  } else if (answerState.selectedAnswer) {
+  } else if (answer.selectedAnswer) {
     answerState = "answered";
   }
 

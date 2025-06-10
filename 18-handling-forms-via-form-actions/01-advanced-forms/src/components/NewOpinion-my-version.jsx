@@ -1,38 +1,33 @@
-import { use, useActionState } from "react";
-
-import { OpinionsContext } from "../store/opinions-context";
-import Submit from "./Submit";
+import { useActionState } from "react";
 
 const initialValues = {
   errors: null,
-  // enteredValues: {},
+  enteredValues: {},
 };
 
 export function NewOpinion() {
-  const { addOpinion } = use(OpinionsContext);
-
   const [formState, formAction, pending] = useActionState(
-    shareOpinionAction,
+    newOpinionAction,
     initialValues
   );
 
-  async function shareOpinionAction(prevFormState, formData) {
+  async function newOpinionAction(prevFormState, formData) {
     const userName = formData.get("userName");
     const title = formData.get("title");
     const body = formData.get("body");
 
     let errors = [];
 
-    if (title.trim().length < 5) {
-      errors.push("Title must be at least 5 characters long");
+    if (userName.trim().length == 0 || userName.trim().length < 3) {
+      errors.push("Name should be of at least 3 characters long");
     }
 
-    if (body.trim().length < 10 || body.trim().length > 300) {
-      errors.push("Opinion must be between 10 and 300 characters long.");
+    if (title.trim().length === 0) {
+      errors.push("Title cannot be empty");
     }
 
-    if (!userName.trim()) {
-      errors.push("Please provide your name.");
+    if (body.trim().length === 0) {
+      errors.push("Body cannot be empty");
     }
 
     if (errors.length > 0) {
@@ -46,13 +41,7 @@ export function NewOpinion() {
       };
     }
 
-    // submit to backend
-    // console.log({
-    //   userName,
-    //   title,
-    //   body,
-    // });
-    await addOpinion({
+    console.log({
       userName,
       title,
       body,
@@ -60,9 +49,13 @@ export function NewOpinion() {
 
     return {
       errors: null,
+      enteredValues: {
+        userName,
+        title,
+        body,
+      },
     };
   }
-
   return (
     <div id="new-opinion">
       <h2>Share your opinion!</h2>
@@ -106,7 +99,9 @@ export function NewOpinion() {
           </ul>
         )}
 
-        <Submit />
+        <p className="actions">
+          <button type="submit">Submit</button>
+        </p>
       </form>
     </div>
   );

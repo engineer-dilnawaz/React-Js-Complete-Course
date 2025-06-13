@@ -1,0 +1,15 @@
+{
+  "name": "00-redux-basics",
+  "version": "1.0.0",
+  "main": "redux-basics.js",
+  "scripts": {
+    "start": "node redux-basics.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "redux": "^5.0.1"
+  }
+}

@@ -9,7 +9,11 @@ export default function MealItem({ title, slug, image, summary, creator }) {
       <header>
         <div className={classes.image}>
           {/*NOTE:- the fill prop is an alternate of width and height prop which tells NEXT to fill available area with the image  */}
-          <Image src={image} alt={title} fill />
+          <Image
+            src={`https://dilnawaz-nextjs-project-images.s3.us-east-1.amazonaws.com/${image}`}
+            alt={title}
+            fill
+          />
         </div>
         <div className={classes.headerText}>
           <h2>{title}</h2>

@@ -1,8 +1,13 @@
+import { S3 } from "@aws-sdk/client-s3";
 import fs from "node:fs";
 
 import sql from "better-sqlite3";
 import slugify from "slugify";
 import xss from "xss";
+
+const s3 = new S3({
+  region: "us-east-1",
+});
 
 const db = sql("meals.db");
 
@@ -22,19 +27,36 @@ export async function saveMeal(meal) {
   meal.slug = slugify(meal.title, { lower: true });
   meal.instructions = xss(meal.instructions);
 
+  // const extension = meal.image.name.split(".").pop();
+  // const fileName = `${meal.slug}.${extension}`;
+
+  // const stream = fs.createWriteStream(`public/images/${fileName}`);
+  // const bufferImage = await meal.image.arrayBuffer();
+
+  // stream.write(Buffer.from(bufferImage), (error) => {
+  //   if (error) {
+  //     throw new Error("Saving image failed!");
+  //   }
+  // });
+
+  // meal.image = `/images/${fileName}`;
+
+  // S3 Bucket Code
   const extension = meal.image.name.split(".").pop();
   const fileName = `${meal.slug}.${extension}`;
 
-  const stream = fs.createWriteStream(`public/images/${fileName}`);
-  const bufferImage = await meal.image.arrayBuffer();
+  const bufferedImage = await meal.image.arrayBuffer();
 
-  stream.write(Buffer.from(bufferImage), (error) => {
-    if (error) {
-      throw new Error("Saving image failed!");
-    }
+  s3.putObject({
+    Bucket: "dilnawaz-nextjs-project-images",
+    Key: fileName,
+    Body: Buffer.from(bufferedImage),
+    ContentType: meal.image.type,
   });
 
-  meal.image = `/images/${fileName}`;
+  meal.image = fileName;
+  // S3 Bucket Code
+
   // instructions
   db.prepare(
     `

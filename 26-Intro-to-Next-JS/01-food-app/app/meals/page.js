@@ -5,6 +5,11 @@ import classes from "./page.module.css";
 import MealsGrid from "@/components/meals/meals-grid";
 import { getMeals } from "@/lib/meals";
 
+export const metadata = {
+  title: "All Meals",
+  description: "Browse the delicious meals shared by our vibrant community.",
+};
+
 async function Meals() {
   // NOTE: in NEXT JS we can mark our component async and use await directly inside component as these are server side components
   const meals = await getMeals();

@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState } from "react";
 
 export const ChallengesContext = createContext({
   challenges: [],
@@ -7,11 +7,34 @@ export const ChallengesContext = createContext({
 });
 
 export default function ChallengesContextProvider({ children }) {
-  const [challenges, setChallenges] = useState([]);
+  const [challenges, setChallenges] = useState([
+    {
+      title: "React Dom Hook",
+      description: "Learn and practice as much as you can",
+      id: "0.08387801928706773",
+      image: {
+        src: "/src/assets/constructing.png",
+        alt: "Person working on some furniture.",
+      },
+      status: "active",
+      deadline: "2025-06-25",
+    },
+    {
+      title: "React Redux",
+      description: "Learn and practice as much as you can",
+      id: "0.08387801928706243",
+      image: {
+        src: "/src/assets/family-time.png",
+        alt: "Person working on some furniture.",
+      },
+      status: "active",
+      deadline: "2025-08-25",
+    },
+  ]);
 
   function addChallenge(challenge) {
     setChallenges((prevChallenges) => [
-      { ...challenge, id: Math.random().toString(), status: 'active' },
+      { ...challenge, id: Math.random().toString(), status: "active" },
       ...prevChallenges,
     ]);
   }
